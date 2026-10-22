@@ -125,7 +125,7 @@ function sidebar(active, extra) {
     <nav class="nav">${nav}</nav>
     ${extra || ''}
     <div class="scopebox">
-      <div class="row"><label class="switch"><input type="checkbox" id="scopeT"><span></span></label>শুধু এই অনুদানের ফিচার</div>
+      <label class="row" for="scopeT"><span class="switch"><input type="checkbox" id="scopeT"><span></span></span>শুধু এই অনুদানের ফিচার</label>
       <div class="lg"><span><i class="pd1"></i>এই অনুদানে (৪ মাস)</span><span><i class="pd2"></i>পর্যায় ২</span><span><i class="pd3"></i>পর্যায় ৩</span></div>
     </div>
     <div class="foot">মক প্রদর্শনী। আইনি পরামর্শ নয়।</div>`;
@@ -133,6 +133,37 @@ function sidebar(active, extra) {
   let on = false; try { on = localStorage.getItem('dhara-scope') === '1'; } catch (e) {}
   t.checked = on; document.body.classList.toggle('scope-only', on);
   t.addEventListener('change', () => { document.body.classList.toggle('scope-only', t.checked); try { localStorage.setItem('dhara-scope', t.checked ? '1' : '0'); } catch (e) {} });
+  mobileNav(NAV.find(n => n.k === active));
+  labelTables();
+}
+
+/* give each cell its column header, so tables can stack into cards on phones */
+function labelTables() {
+  document.querySelectorAll('table.tbl').forEach(t => {
+    const heads = [...t.querySelectorAll('thead th')].map(th => th.textContent.trim());
+    t.querySelectorAll('tbody tr').forEach(tr => [...tr.children].forEach((td, i) => { if (heads[i]) td.dataset.label = heads[i]; }));
+  });
+}
+
+/* phones: top bar + slide-out drawer for the sidebar */
+function mobileNav(cur) {
+  const side = document.querySelector('.side');
+  side.id = 'sidenav';
+  const bar = document.createElement('header');
+  bar.className = 'topbar';
+  bar.innerHTML = `<button class="menu" type="button" aria-label="মেনু খুলুন" aria-controls="sidenav" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="brand" href="index.html"><span class="logo">ধ</span><span>ধারা</span></a>
+    ${cur ? `<span class="cur">${cur.t}</span>` : ''}`;
+  document.querySelector('.main').prepend(bar);
+  const scrim = document.createElement('div');
+  scrim.className = 'scrim';
+  document.body.appendChild(scrim);
+  const btn = bar.querySelector('.menu');
+  const set = open => { document.body.classList.toggle('nav-open', open); btn.setAttribute('aria-expanded', open); };
+  btn.addEventListener('click', () => set(!document.body.classList.contains('nav-open')));
+  scrim.addEventListener('click', () => set(false));
+  side.addEventListener('click', e => { if (e.target.closest('a,[data-ex]')) set(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
 }
 const PH = n => `<span class="ph ph${n}">${n === 1 ? 'এই অনুদানে' : 'পর্যায় ' + bn(n)}</span>`;
 function tabs(root) {
@@ -162,7 +193,7 @@ function Tour(steps, opts = {}) {
     i = n; clear();
     const s = steps[i];
     box.innerHTML = `<div class="prog">${steps.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div>
-      <p class="cnt">ধাপ ${bn(i + 1)} / ${bn(steps.length)}</p><h3>${s.t}</h3><p>${s.p}</p>
+      <p class="cnt">ধাপ ${bn(i + 1)} / ${bn(steps.length)}</p><h2>${s.t}</h2><p>${s.p}</p>
       <div class="btns"><button class="x" type="button">ট্যুর বন্ধ</button>${i ? '<button class="pv" type="button">আগের ধাপ</button>' : ''}
       <button class="nx" type="button">${i === steps.length - 1 ? (opts.lastLabel || 'শেষ করুন') : 'পরের ধাপ'}</button></div>`;
     box.classList.add('show');

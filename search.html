@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="বাংলা বা ইংরেজিতে আইনি প্রশ্ন করুন। ধারা নির্দিষ্ট তারিখে কার্যকর আইনের সংস্করণ থেকে উত্তর দেয়, প্রতিটি বাক্যের উৎস সহ (মক প্রদর্শনী)।">
 <title>ধারা | আইন অনুসন্ধান</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +22,7 @@
       <p class="lede">বাংলা বা ইংরেজিতে প্রশ্ন লিখুন। ধারা শুধু সেই তারিখে কার্যকর সংস্করণ থেকে উত্তর দেবে, প্রতিটি বাক্যে উৎস সহ।</p>
 
       <div class="ask" id="ask">
+        <label class="sr-only" for="q">আপনার আইনি প্রশ্ন</label>
         <textarea id="q" rows="2" placeholder="যেমন: মাতৃত্ব ছুটি কত সপ্তাহ?"></textarea>
         <div class="ask-row">
           <div class="asof">
@@ -108,7 +110,7 @@
 
     if (kind === 'none') {
       ans.innerHTML = `<p class="q">${q}</p><div class="meta">${metaDate}</div>
-        <div class="stop"><h3>পর্যাপ্ত আইনি ভিত্তি পাওয়া যায়নি</h3>
+        <div class="stop"><h2>পর্যাপ্ত আইনি ভিত্তি পাওয়া যায়নি</h2>
         <p>এই প্রশ্নের উত্তর দেওয়ার মতো যথেষ্ট প্রাসঙ্গিক ধারা খুঁজে পাওয়া যায়নি, তাই ধারা অনুমাননির্ভর উত্তর দেবে না। প্রশ্নটি অন্যভাবে লিখুন অথবা ধারা ব্রাউজারে সংশ্লিষ্ট আইন খুঁজুন।</p>
         <p class="score">সবচেয়ে কাছের ধারার মিলও নির্ধারিত নির্ভরযোগ্যতার সীমার নিচে ছিল।</p></div>`;
       src.innerHTML = '<div class="empty">নির্ভরযোগ্যতার সীমার উপরে কোনো ধারা পাওয়া যায়নি, তাই কোনো উৎস দেখানো হচ্ছে না।</div>';
@@ -116,7 +118,7 @@
     }
     if (kind === 'scope') {
       ans.innerHTML = `<p class="q">${q}</p><div class="meta">${metaDate}</div>
-        <div class="stop scope"><h3>ধারা মামলার ফলাফল অনুমান করে না</h3>
+        <div class="stop scope"><h2>ধারা মামলার ফলাফল অনুমান করে না</h2>
         <p>ধারা একটি আইনি গবেষণা সহায়ক। এটি আইনি পরামর্শ দেয় না এবং কোনো মামলার রায় বা বিচারকের সিদ্ধান্ত অনুমান করে না। আপনার বিষয়ে কোন ধারা প্রযোজ্য তা জানতে চাইলে সরাসরি আইনের প্রশ্ন করুন।</p>
         <p class="score"><button class="cite" type="button" id="sugg" style="padding:0 10px">মজুরি কত দিনের মধ্যে দিতে হবে?</button></p></div>`;
       src.innerHTML = '<div class="empty">এই ধরনের প্রশ্নে কোনো ধারা খোঁজা হয় না।</div>';
@@ -207,7 +209,7 @@
       const label = v.key === 'old' ? 'মূল আইন' : 'সংশোধিত (' + bn(v.from.slice(0, 4)) + ')';
       return `<div class="tseg ${v.key} ${v === cur ? 'active' : ''}" style="left:${a}%;width:${b - a - 0.4}%">${label}</div>`;
     }).join('');
-    return `<div class="tl"><h4>ধারা ${s.num} এর সংস্করণ</h4>
+    return `<div class="tl"><h2>ধারা ${s.num} এর সংস্করণ</h2>
       <p class="sub">কালো দাগটি আপনার বেছে নেওয়া তারিখ। উত্তর শুধু সেই তারিখে কার্যকর সংস্করণ থেকে এসেছে।</p>
       <div class="track">${segs}<div class="pin" style="left:${pct(date)}%"><span>${fmt(date)}</span></div></div>
       <div class="axis"><span>২০০৬</span><span>২০১০</span><span>২০১৪</span><span>২০১৮</span><span>২০২২</span><span>২০২৬</span></div></div>`;
