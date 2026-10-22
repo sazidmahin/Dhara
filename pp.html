@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ধারা | পাবলিক প্রসিকিউটর</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside class="side"></aside>
+<main class="main">
+  <div class="mockbar">মক প্রদর্শনী: সব নাম, মামলা, ধারার লেখা ও সংখ্যা কাল্পনিক উদাহরণ।
+    <button class="tourbtn" id="tourbtn" type="button">এই পাতার ডেমো চালান</button></div>
+  <div class="app">
+    <div class="pagehead">
+      <div><h1>আজকের কজলিস্ট</h1><p class="sub">পাবলিক প্রসিকিউটর · জেলা ও দায়রা জজ আদালত, টাঙ্গাইল · সোমবার, ২৯ সেপ্টেম্বর ২০২৬</p></div>
+      <div class="acts"><span class="ph ph2">পর্যায় ২</span><button class="btn dark" type="button">দিনের সব ব্রিফ PDF</button></div>
+    </div>
+
+    <div class="grid g4" id="ppk" data-phase="2">
+      <div class="kpi"><div class="l">আজকের শুনানি</div><div class="v">৬</div><div class="t up">৫টির ব্রিফ প্রস্তুত</div></div>
+      <div class="kpi"><div class="l">সাক্ষী আজ আসার কথা</div><div class="v">৯</div><div class="t dn">৩ জনের সমন ফেরত আসেনি</div></div>
+      <div class="kpi"><div class="l">বিচারের সময়সীমার কাছে</div><div class="v" style="color:var(--red)">২</div><div class="t dn">৩০ দিনের মধ্যে</div></div>
+      <div class="kpi"><div class="l">মোট চলমান মামলা</div><div class="v">৯৮৭</div><div class="t muted">এই আদালতে</div></div>
+    </div>
+
+    <div class="split" style="margin-top:18px">
+      <div class="panel" id="cause" data-phase="2">
+        <div class="panel-h"><h3>কজলিস্ট ও ব্রিফ</h3><div class="r"><span class="chip">কজলিস্ট থেকে স্বয়ংক্রিয়</span><span class="ph ph2">পর্যায় ২</span></div></div>
+        <div class="tblwrap"><table class="tbl">
+          <thead><tr><th>ক্রম</th><th>মামলা</th><th>পর্যায়</th><th>সাক্ষী</th><th>ব্রিফ</th></tr></thead>
+          <tbody>
+            <tr class="click" onclick="location.href='pp-case.html'"><td>১</td><td><b>দায়রা মামলা ১২৩/২০২৬</b><div class="sm">রাষ্ট্র বনাম মো. সোহেল ও অন্যান্য · বসতঘরে চুরি</div></td><td><span class="pri bl">সাক্ষ্যগ্রহণ</span></td><td>২/৩ নিশ্চিত</td><td><span class="pri ok">প্রস্তুত</span></td></tr>
+            <tr class="click"><td>২</td><td><b>দায়রা মামলা ০৮৮/২০২৫</b><div class="sm">রাষ্ট্র বনাম আলমগীর · মাদক</div></td><td><span class="pri md">জামিন শুনানি</span></td><td>প্রযোজ্য নয়</td><td><span class="pri ok">প্রস্তুত</span></td></tr>
+            <tr class="click"><td>৩</td><td><b>নারী ও শিশু ৪১/২০২৫</b><div class="sm">রাষ্ট্র বনাম রফিক · যৌতুক</div></td><td><span class="pri bl">সাক্ষ্যগ্রহণ</span></td><td>১/২ নিশ্চিত</td><td><span class="pri ok">প্রস্তুত</span></td></tr>
+            <tr class="click"><td>৪</td><td><b>দায়রা মামলা ২০৪/২০২৬</b><div class="sm">রাষ্ট্র বনাম জসিম · দস্যুতা</div></td><td><span class="pri lo">অভিযোগ গঠন</span></td><td>প্রযোজ্য নয়</td><td><span class="pri ok">প্রস্তুত</span></td></tr>
+            <tr class="click"><td>৫</td><td><b>দায়রা মামলা ০১৯/২০২৪</b><div class="sm">রাষ্ট্র বনাম শফিক · হত্যা</div></td><td><span class="pri hi">যুক্তিতর্ক</span></td><td>প্রযোজ্য নয়</td><td><span class="pri ok">প্রস্তুত</span></td></tr>
+            <tr class="click"><td>৬</td><td><b>দায়রা মামলা ১৭৭/২০২৬</b><div class="sm">রাষ্ট্র বনাম নাজমুল · প্রতারণা</div></td><td><span class="pri bl">সাক্ষ্যগ্রহণ</span></td><td>০/২ নিশ্চিত</td><td><span class="pri md">কাগজ অসম্পূর্ণ</span></td></tr>
+          </tbody></table></div>
+      </div>
+      <div>
+        <div class="panel" id="ppal">
+          <div class="panel-h"><h3>সতর্কবার্তা</h3></div>
+          <div class="alert i" data-phase="2"><span class="ico">⚖</span><div><b>পদ্ধতিগত আইনে পরিবর্তন</b>ফৌজদারি কার্যবিধি ২০২৬ সনের ১১ নং আইনে সংশোধিত, কার্যকর ধরা হয়েছে ১০ আগস্ট ২০২৫ থেকে। কোন চলমান মামলার কোন ধাপে প্রভাব পড়ে, তালিকা দেখুন।</div></div>
+          <div class="alert d" data-phase="3"><span class="ico">⏱</span><div><b>বিচারের সময়সীমা</b>২টি মামলা বিশেষ আইনের নির্ধারিত সময়সীমার কাছাকাছি।</div></div>
+          <div class="alert w" data-phase="2"><span class="ico">✉</span><div><b>৩টি সমন ফেরত আসেনি</b>মামলা ১৭৭/২০২৬-এর দুই সাক্ষী সহ। থানাকে রিমাইন্ডার পাঠান।</div></div>
+        </div>
+        <div class="panel" style="margin-top:16px" data-phase="3">
+          <div class="panel-h"><h3>পর্যায় অনুযায়ী মামলা</h3><div class="r"><span class="ph ph3">পর্যায় ৩</span></div></div>
+          <div class="bars">
+            <div class="bar"><span>সাক্ষ্যগ্রহণ</span><div class="track2"><div class="fill" style="width:78%"></div></div><span>৫১২</span></div>
+            <div class="bar"><span>অভিযোগ গঠন</span><div class="track2"><div class="fill" style="width:30%"></div></div><span>১৯৮</span></div>
+            <div class="bar"><span>জামিন ও অন্যান্য</span><div class="track2"><div class="fill" style="width:25%"></div></div><span>১৬৫</span></div>
+            <div class="bar"><span>যুক্তিতর্ক ও রায়</span><div class="track2"><div class="fill" style="width:17%"></div></div><span>১১২</span></div>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:16px">
+          <div class="panel-h"><h3>ঘটনার তারিখের আইন</h3><div class="r"><span class="ph ph1">এই অনুদানে</span></div></div>
+          <p class="muted" style="margin:0 0 10px;font-size:14px">যেকোনো মামলায় ঘটনার তারিখ দিয়ে তখনকার আইন খুঁজুন, উৎস সহ।</p>
+          <a class="btn pri" href="index.html" style="width:100%;justify-content:center">আইনি ইঞ্জিন খুলুন</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="data.js"></script>
+<script>
+  sidebar('pp');
+  demo([
+    { t: 'প্রসিকিউটরের সকাল', el: '#ppk',
+      p: 'একজন প্রসিকিউটরের হাতে শত শত মামলা। দিনের শুরুতে দেখা যায় আজ কয়টা শুনানি, কয়জন সাক্ষী আসবেন, আর কোন মামলা সময়সীমার কাছে।' },
+    { t: 'কজলিস্ট থেকে ব্রিফ', el: '#cause',
+      p: 'আদালতের কজলিস্ট থেকে সেদিনের মামলাগুলো আসে, আর প্রতিটির জন্য এক পাতার ব্রিফ আগে থেকেই তৈরি থাকে। কোন মামলার কাগজ অসম্পূর্ণ, তাও চিহ্নিত।' },
+    { t: 'আইন বদলের সতর্কবার্তা', el: '#ppal',
+      p: 'এখানে একটা প্রকৃত উদাহরণ: ফৌজদারি কার্যবিধির ২০২৬ সালের সংশোধন কার্যকর ধরা হয়েছে আইন পাসের আগের তারিখ থেকে। কোন চলমান মামলায় প্রভাব পড়ে, ধারা সেটা খুঁজে দেয়।' },
+    { t: 'প্রথম মামলাটা খোলা', el: '#cause tbody tr',
+      p: 'দায়রা মামলা ১২৩/২০২৬, আজ সাক্ষ্যগ্রহণ। কেসটা খুলে দেখা যাক প্রস্তুতি কীভাবে হয়।' }
+  ], 'pp-case.html', 'মামলা খুলুন');
+</script>
+</body>
+</html>

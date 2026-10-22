@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ধারা | আইন অনুসন্ধান</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside class="side"></aside>
+
+<main class="main">
+  <div class="mockbar">মক প্রদর্শনী: এখানে দেখানো আইন, ধারা, তারিখ ও লেখা কাল্পনিক উদাহরণ, প্রকৃত আইন নয়।
+    <button class="tourbtn" id="tourbtn" type="button">ধাপে ধাপে ডেমো দেখুন</button></div>
+  <div class="wrap">
+    <section class="center">
+      <h1>যে তারিখের আইন জানতে চান, সেই তারিখেই খুঁজুন</h1>
+      <p class="lede">বাংলা বা ইংরেজিতে প্রশ্ন লিখুন। ধারা শুধু সেই তারিখে কার্যকর সংস্করণ থেকে উত্তর দেবে, প্রতিটি বাক্যে উৎস সহ।</p>
+
+      <div class="ask" id="ask">
+        <textarea id="q" rows="2" placeholder="যেমন: মাতৃত্ব ছুটি কত সপ্তাহ?"></textarea>
+        <div class="ask-row">
+          <div class="asof">
+            <label for="d">যে তারিখের আইন</label>
+            <input id="d" type="date" value="2026-09-25" min="2006-01-01" max="2026-12-31">
+          </div>
+          <div class="seg" role="group" aria-label="উত্তরের ভাষা">
+            <button class="on" data-al="bn" type="button">বাংলা</button><button data-al="en" type="button">English</button>
+          </div>
+          <button class="go" id="go" type="button">উত্তর খুঁজুন</button>
+        </div>
+      </div>
+
+      <div class="examples" id="examples">
+        <p>উদাহরণ প্রশ্ন</p>
+        <div class="row"></div>
+      </div>
+
+      <ul class="steps" id="steps">
+        <li><span class="dot"></span>নির্বাচিত তারিখে কার্যকর ধারাগুলো বাছাই করা হচ্ছে</li>
+        <li><span class="dot"></span>শব্দ ও অর্থ মিলিয়ে প্রাসঙ্গিক ধারা খোঁজা হচ্ছে</li>
+        <li><span class="dot"></span>প্রতিটি উদ্ধৃতি মূল ধারার সাথে যাচাই করা হচ্ছে</li>
+      </ul>
+
+      <div class="answer" id="answer"></div>
+    </section>
+
+    <aside class="rail">
+      <h2>উৎস ধারা</h2>
+      <p class="hint">উত্তরের নম্বরে চাপ দিলে সংশ্লিষ্ট ধারা এখানে চিহ্নিত হবে।</p>
+      <div id="sources"><div class="empty">প্রশ্ন করলে উত্তরের ভিত্তি হিসেবে ব্যবহৃত ধারাগুলো এখানে দেখাবে।</div></div>
+    </aside>
+  </div>
+</main>
+
+<script src="data.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const qEl = $('q'), dEl = $('d');
+  let ansLang = 'bn';
+
+  sidebar('search', `<div class="sidelist"><p>উদাহরণ প্রশ্ন</p>${EXAMPLES.map((e, i) => `<div data-ex="${i}">${e.label}</div>`).join('')}</div>`);
+  document.querySelector('#examples .row').innerHTML = EXAMPLES.map((e, i) =>
+    `<button data-ex="${i}" type="button" title="${e.label}"><i class="i-${e.kind}"></i>${e.label}</button>`).join('');
+
+  document.querySelectorAll('[data-ex]').forEach(el => el.addEventListener('click', () => runEx(+el.dataset.ex)));
+  document.querySelectorAll('[data-al]').forEach(b => b.addEventListener('click', () => {
+    ansLang = b.dataset.al;
+    document.querySelectorAll('[data-al]').forEach(x => x.classList.toggle('on', x === b));
+    if ($('answer').style.display === 'block' && qEl.value.trim()) render(qEl.value.trim(), dEl.value);
+  }));
+  $('go').addEventListener('click', () => run(qEl.value.trim(), dEl.value));
+  qEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); run(qEl.value.trim(), dEl.value); } });
+
+  function setLang(l) { ansLang = l; document.querySelectorAll('[data-al]').forEach(x => x.classList.toggle('on', x.dataset.al === l)); }
+  function runEx(i) { const e = EXAMPLES[i]; qEl.value = e.q; dEl.value = e.d; return run(e.q, e.d); }
+
+  function run(q, date) {
+    return new Promise(resolve => {
+      if (!q) { qEl.focus(); return resolve(); }
+      const steps = $('steps'), items = [...steps.children];
+      $('answer').style.display = 'none';
+      $('sources').innerHTML = '<div class="empty">ধারা খোঁজা হচ্ছে…</div>';
+      steps.style.display = 'block';
+      items.forEach(li => li.className = '');
+      items.forEach((li, i) => setTimeout(() => { li.className = 'run'; if (i) items[i - 1].className = 'done'; }, i * 450));
+      setTimeout(() => { items[items.length - 1].className = 'done'; render(q, date); resolve(); }, items.length * 450 + 150);
+    });
+  }
+
+  function classify(q) {
+    if (/জিত|হারব|ফলাফল|রায় কী হবে|win|outcome|predict/i.test(q)) return 'scope';
+    if (/মাতৃত্ব|প্রসূতি|maternity|pregnan/i.test(q)) return 'mat';
+    if (/চাকরি শেষ|চাকুরি শেষ|অবসান|termination|dues/i.test(q)) return 'term';
+    if (/মজুরি|বেতন|wage|salary/i.test(q)) return 'wage';
+    return 'none';
+  }
+  const isEnglishQ = q => /[a-z]/i.test(q) && !/[\u0980-\u09FF]/.test(q);
+  const C = (n, k) => `<button class="cite" data-s="${n}" data-k="${k}" type="button" title="উৎস ${bn(n)} দেখুন">${ansLang === 'bn' ? bn(n) : n}</button>`;
+
+  function render(q, date) {
+    const ans = $('answer'), src = $('sources'), kind = classify(q), en = ansLang === 'en';
+    const metaDate = en ? `Answer based on the law in force on ${fmtEn(date)}` : `${fmt(date)} তারিখে কার্যকর আইন অনুযায়ী উত্তর`;
+    ans.style.display = 'block';
+
+    if (kind === 'none') {
+      ans.innerHTML = `<p class="q">${q}</p><div class="meta">${metaDate}</div>
+        <div class="stop"><h3>পর্যাপ্ত আইনি ভিত্তি পাওয়া যায়নি</h3>
+        <p>এই প্রশ্নের উত্তর দেওয়ার মতো যথেষ্ট প্রাসঙ্গিক ধারা খুঁজে পাওয়া যায়নি, তাই ধারা অনুমাননির্ভর উত্তর দেবে না। প্রশ্নটি অন্যভাবে লিখুন অথবা ধারা ব্রাউজারে সংশ্লিষ্ট আইন খুঁজুন।</p>
+        <p class="score">সবচেয়ে কাছের ধারার মিলও নির্ধারিত নির্ভরযোগ্যতার সীমার নিচে ছিল।</p></div>`;
+      src.innerHTML = '<div class="empty">নির্ভরযোগ্যতার সীমার উপরে কোনো ধারা পাওয়া যায়নি, তাই কোনো উৎস দেখানো হচ্ছে না।</div>';
+      return;
+    }
+    if (kind === 'scope') {
+      ans.innerHTML = `<p class="q">${q}</p><div class="meta">${metaDate}</div>
+        <div class="stop scope"><h3>ধারা মামলার ফলাফল অনুমান করে না</h3>
+        <p>ধারা একটি আইনি গবেষণা সহায়ক। এটি আইনি পরামর্শ দেয় না এবং কোনো মামলার রায় বা বিচারকের সিদ্ধান্ত অনুমান করে না। আপনার বিষয়ে কোন ধারা প্রযোজ্য তা জানতে চাইলে সরাসরি আইনের প্রশ্ন করুন।</p>
+        <p class="score"><button class="cite" type="button" id="sugg" style="padding:0 10px">মজুরি কত দিনের মধ্যে দিতে হবে?</button></p></div>`;
+      src.innerHTML = '<div class="empty">এই ধরনের প্রশ্নে কোনো ধারা খোঁজা হয় না।</div>';
+      $('sugg').onclick = () => runEx(0);
+      return;
+    }
+
+    let body = '', note = '', srcIds = [], tlSec = null;
+    if (isEnglishQ(q)) note += `<div class="note x">${en ? 'Your English question matched provisions stored in both Bangla and English, without machine translation.' : 'ইংরেজি প্রশ্ন থেকে বাংলা ও ইংরেজি জোড়া ধারা খুঁজে পাওয়া গেছে, কোনো মেশিন অনুবাদ ছাড়াই।'}</div>`;
+
+    if (kind === 'wage') {
+      const v = versionAt('123', date), old = v.key === 'old';
+      srcIds = ['123', '124']; tlSec = '123';
+      body = en
+        ? `<p>Wages must be paid before the ${old ? 'seventh' : 'fifth'} working day after the wage period ends.${C(1, 'time')}${old ? '' : ' Under this version, wages may also be paid through a bank account.' + C(1, 'bank')}</p><p>On termination, all dues must be paid within thirty working days.${C(2, 'dues')}</p>`
+        : `<p>মজুরি-মেয়াদ শেষ হওয়ার পর ${old ? 'সপ্তম' : 'পঞ্চম'} কর্মদিবস অতিক্রান্ত হওয়ার আগেই শ্রমিকের মজুরি পরিশোধ করতে হবে।${C(1, 'time')}${old ? '' : ' এই সংস্করণ অনুযায়ী মজুরি ব্যাংক হিসাবের মাধ্যমেও পরিশোধ করা যায়।' + C(1, 'bank')}</p><p>চাকরির অবসান হলে সকল পাওনা অবসানের তারিখ থেকে ত্রিশ কর্মদিবসের মধ্যে পরিশোধ করতে হবে।${C(2, 'dues')}</p>`;
+      if (old) note += `<div class="note x">${en ? 'Section 123 was amended after this date (22 July 2013). The current law is different.' : 'এই তারিখের পরে ধারা ১২৩ সংশোধিত হয়েছে (২২ জুলাই ২০১৩)। বর্তমান আইন ভিন্ন।'}</div>`;
+    }
+    if (kind === 'mat') {
+      const v = versionAt('46', date), old = v.key === 'old';
+      srcIds = ['46']; tlSec = '46';
+      body = en
+        ? `<p>A woman worker is entitled to ${old ? 'twelve' : 'sixteen'} weeks of maternity leave: ${old ? 'six' : 'eight'} weeks before and ${old ? 'six' : 'eight'} weeks after delivery.${C(1, 'leave')}</p>`
+        : `<p>একজন নারী শ্রমিক মোট ${old ? 'বারো' : 'ষোল'} সপ্তাহ মাতৃত্ব ছুটি পাবেন: সন্তান প্রসবের আগে ${old ? 'ছয়' : 'আট'} সপ্তাহ এবং পরে ${old ? 'ছয়' : 'আট'} সপ্তাহ।${C(1, 'leave')}</p>`;
+      if (old) note += `<div class="note x">${en ? 'Section 46 was amended after this date (18 September 2018). The current law is different.' : 'এই তারিখের পরে ধারা ৪৬ সংশোধিত হয়েছে (১৮ সেপ্টেম্বর ২০১৮)। বর্তমান আইন ভিন্ন।'}</div>`;
+    }
+    if (kind === 'term') {
+      srcIds = ['124'];
+      body = en
+        ? `<p>On termination of employment, all dues of the worker must be paid within thirty working days from the date of termination.${C(1, 'dues')}</p>`
+        : `<p>চাকরির অবসান হলে শ্রমিকের সকল পাওনা অবসানের তারিখ থেকে ত্রিশ কর্মদিবসের মধ্যে পরিশোধ করতে হবে।${C(1, 'dues')}</p>`;
+      note += `<div class="note w">${en ? 'The amendment history of this section could not be verified, so the version on your chosen date is not guaranteed. The current text was used.' : 'এই ধারার সংশোধন-ইতিহাস যাচাই করা যায়নি, তাই নির্বাচিত তারিখের সংস্করণ নিশ্চিত নয়। বর্তমান লেখা থেকে উত্তর দেওয়া হয়েছে।'}</div>`;
+    }
+
+    const n = srcIds.length;
+    ans.innerHTML = `<p class="q">${q}</p><div class="meta">${metaDate}</div>
+      <div class="body ${en ? 'en' : ''}">${body}</div>
+      <div class="verify"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-10"/></svg>${en ? `All citations checked against ${n} retrieved provision${n > 1 ? 's' : ''}` : `সব উদ্ধৃতি ${bn(n)}টি উদ্ধারকৃত ধারার সাথে যাচাই করা হয়েছে`}</div>
+      <div class="srclist"><p>${en ? 'This answer is grounded only in these provisions' : 'এই উত্তরের ভিত্তি শুধু এই ধারাগুলো'}</p>${srcIds.map((id, k) => {
+        const sv = versionAt(id, date);
+        return `<button type="button" data-go="${k + 1}"><span class="n">${en ? k + 1 : bn(k + 1)}</span><span>ধারা ${SECTIONS[id].num}, ${ACT.bn}<small>যে সংস্করণ ব্যবহৃত: ${fmt(sv.from)} থেকে ${sv.to ? fmt(sv.to) : 'বর্তমান'}</small></span></button>`;
+      }).join('')}</div>
+      ${note}${tlSec ? timeline(tlSec, date) : ''}`;
+
+    src.innerHTML = srcIds.map((id, k) => card(id, k + 1, date)).join('');
+    ans.querySelectorAll('.cite').forEach(c => c.addEventListener('click', () => focusSrc(c.dataset.s, c.dataset.k, c)));
+    ans.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => focusSrc(b.dataset.go, null, null)));
+  }
+
+  function focusSrc(n, k, btn) {
+    document.querySelectorAll('.src,.cite,.qs').forEach(x => x.classList.remove('hl', 'on'));
+    const t = $('s' + n); if (!t) return;
+    t.classList.add('hl');
+    const d = t.querySelector('details'); if (d) d.open = true;
+    if (k) t.querySelectorAll(`.qs[data-k="${k}"]`).forEach(x => x.classList.add('on'));
+    if (btn) btn.classList.add('hl');
+    t.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function card(id, n, date) {
+    const s = SECTIONS[id], v = versionAt(id, date), L = LINEAGE[s.lineage], en = ansLang === 'en';
+    return `<div class="src" id="s${n}">
+      <div class="top"><span class="n">${en ? n : bn(n)}</span><span class="act">${en ? ACT.en : ACT.bn}</span></div>
+      <p class="sec">${en ? 'Section ' + id + ': ' + s.title.en : 'ধারা ' + s.num + ': ' + s.title.bn}</p>
+      <div class="badges"><span class="b valid">কার্যকর: ${fmt(v.from)} থেকে ${v.to ? fmt(v.to) : 'বর্তমান'}</span><span class="b ${L.cls}">${L.bn}</span></div>
+      ${s.lineage === 'none' ? '<div class="warnline">এই ধারার পূর্ববর্তী সংস্করণ যাচাই করা যায়নি। বর্তমান লেখা দেখানো হচ্ছে।</div>' : ''}
+      ${s.lineage === 'medium' ? '<div class="warnline" style="background:var(--blue-soft);color:var(--blue)">সংশোধনের তারিখ পাদটীকা থেকে আংশিকভাবে নির্ণীত। মূল গেজেটের সাথে মিলিয়ে দেখুন।</div>' : ''}
+      <p class="txt ${en ? 'en' : ''}">${mk(v[en ? 'en' : 'bn'])}</p>
+      <details class="prov"><summary>এই উৎস কোথা থেকে এসেছে</summary>
+        <dl>
+          <dt>মূল উৎস</dt><dd>বাংলাদেশ কোড পোর্টাল<br><span class="url">${srcUrl(id)}</span></dd>
+          <dt>ব্যবহৃত সংস্করণ</dt><dd>${fmt(v.from)} থেকে ${v.to ? fmt(v.to) : 'বর্তমান'} (${amendAct(v)})</dd>
+          <dt>তারিখ নির্ণয়ের ভিত্তি</dt><dd>${v.foot}</dd>
+          <dt>ধারার শনাক্তকারী</dt><dd><code>${ACT.id}/s${id}@${v.from}</code></dd>
+        </dl>
+      </details>
+      <a href="provision.html?s=${id}&d=${date}">পূর্ণ ধারা ও সংশোধন দেখুন</a>
+    </div>`;
+  }
+
+  function timeline(id, date) {
+    const s = SECTIONS[id];
+    const start = new Date('2006-01-01'), span = new Date('2027-01-01') - start;
+    const pct = d => Math.min(100, Math.max(0, (new Date(d) - start) / span * 100));
+    const cur = versionAt(id, date);
+    const segs = s.versions.map(v => {
+      const a = pct(v.from), b = v.to ? pct(v.to) : 100;
+      const label = v.key === 'old' ? 'মূল আইন' : 'সংশোধিত (' + bn(v.from.slice(0, 4)) + ')';
+      return `<div class="tseg ${v.key} ${v === cur ? 'active' : ''}" style="left:${a}%;width:${b - a - 0.4}%">${label}</div>`;
+    }).join('');
+    return `<div class="tl"><h4>ধারা ${s.num} এর সংস্করণ</h4>
+      <p class="sub">কালো দাগটি আপনার বেছে নেওয়া তারিখ। উত্তর শুধু সেই তারিখে কার্যকর সংস্করণ থেকে এসেছে।</p>
+      <div class="track">${segs}<div class="pin" style="left:${pct(date)}%"><span>${fmt(date)}</span></div></div>
+      <div class="axis"><span>২০০৬</span><span>২০১০</span><span>২০১৪</span><span>২০১৮</span><span>২০২২</span><span>২০২৬</span></div></div>`;
+  }
+
+  /* guided tour */
+  const tour = Tour([
+    { t: 'প্রশ্ন আর তারিখ', el: '#ask', do: async () => { setLang('bn'); qEl.value = EXAMPLES[0].q; dEl.value = TODAY; },
+      p: 'ব্যবহারকারী বাংলা বা ইংরেজিতে প্রশ্ন লেখেন এবং বেছে নেন কোন তারিখের আইন জানতে চান। বিরোধ যে দিন শুরু হয়েছে, সেই দিনের আইনই প্রযোজ্য।' },
+    { t: 'উত্তর, প্রতিটি বাক্যে উৎস', el: '#answer', do: () => runEx(0),
+      p: 'প্রথমে শুধু সেই তারিখে কার্যকর ধারা বাছাই হয়, তারপর খোঁজা ও উদ্ধৃতি যাচাই। উত্তরের প্রতিটি বাক্যের পাশে নম্বর দেওয়া উৎস থাকে।' },
+    { t: 'উত্তরটা কোন ধারা থেকে এসেছে', el: '.srclist',
+      p: 'উত্তরের নিচে স্পষ্ট লেখা থাকে কোন কোন ধারা থেকে উত্তরটা তৈরি, আর প্রতিটি ধারার ঠিক কোন তারিখের সংস্করণ ব্যবহৃত হয়েছে। এর বাইরের কিছু থেকে উত্তর আসে না।' },
+    { t: 'বাক্য থেকে ধারার নির্দিষ্ট অংশে', el: '#s1', do: async () => { const c = document.querySelector('.cite'); if (c) c.click(); },
+      p: 'উদ্ধৃতি নম্বরে চাপ দিলে ধারার যে নির্দিষ্ট অংশ ওই বাক্যকে সমর্থন করে সেটা হলুদ রঙে চিহ্নিত হয়। নিচে দেখা যায় উৎস কোথা থেকে: বাংলাদেশ কোড পোর্টালের কোন পাতা, আর কোন সংশোধনী পাদটীকা থেকে সংস্করণের তারিখ নির্ণীত।' },
+    { t: 'তারিখ বদলালে উত্তর বদলায়', el: '.tl', do: () => runEx(1),
+      p: 'একই প্রশ্ন, কিন্তু ২০১০ সালের তারিখে। তখন সপ্তম কর্মদিবস ছিল, এখন পঞ্চম। সাধারণ সার্চ বা চ্যাটবট সবসময় বর্তমান লেখা দেখায়, ধারা দেখায় সেই দিনের আইন।' },
+    { t: 'ইংরেজিতে প্রশ্ন, একই ধারা', el: '#answer', do: () => runEx(2),
+      p: 'ইংরেজিতে প্রশ্ন করলেও বাংলা ও ইংরেজি জোড়া ধারা খুঁজে পাওয়া যায়, মেশিন অনুবাদ ছাড়াই। উত্তরের ভাষা উপরের বাটন দিয়ে বদলানো যায়।' },
+    { t: 'আরেকটি সংশোধিত ধারা', el: '.tl', do: async () => { setLang('bn'); await runEx(3); },
+      p: '২০১৫ সালের তারিখে মাতৃত্ব ছুটি ছিল বারো সপ্তাহ, ২০১৮ সালের সংশোধনের পর ষোল সপ্তাহ। এই ধারার সংশোধন-ইতিহাস মাঝারি নির্ভরযোগ্য, তাই উৎস কার্ডে সেটাও জানানো হয়।' },
+    { t: 'ইতিহাস না থাকলে সতর্কতা', el: '#s1', do: () => runEx(4),
+      p: 'সব ধারার সংশোধন-ইতিহাস স্বয়ংক্রিয়ভাবে পাওয়া যায় না। তখন ধারা বর্তমান লেখা থেকে উত্তর দেয় এবং স্পষ্ট সতর্কবার্তা দেখায়, চুপচাপ ভুল উত্তর দেয় না।' },
+    { t: 'নিশ্চিত না হলে উত্তর নয়', el: '.stop', do: () => runEx(5),
+      p: 'প্রাসঙ্গিক ধারার মিল নির্ধারিত সীমার নিচে থাকলে ধারা উত্তর দিতে অস্বীকার করে। কোনো বানানো ধারা নম্বর বা অনুমাননির্ভর উত্তর দেখায় না।' },
+    { t: 'মামলার ফলাফল অনুমান নয়', el: '.stop', do: () => runEx(6),
+      p: 'ধারা আইনি গবেষণা সহায়ক, আইনি পরামর্শদাতা নয়। মামলার রায় বা বিচারকের সিদ্ধান্ত অনুমানের প্রশ্নে সে ব্যবহারকারীকে আইনের প্রশ্নের দিকে ফিরিয়ে দেয়।' },
+    { t: 'এরপর: ধারা ব্রাউজার', el: '.nav a[href="provision.html"]',
+      p: 'পরের অংশে দেখব একটি ধারার সব সংস্করণ, দুই সংস্করণের মধ্যে ঠিক কী বদলেছে, আর প্রতিটি ধারার মেটাডেটা।' }
+  ], { lastLabel: 'ধারা ব্রাউজারে যান', onLast: () => { location.href = 'provision.html?s=123&tour=1'; } });
+  $('tourbtn').addEventListener('click', tour.start);
+
+  const P = new URLSearchParams(location.search);
+  if (P.has('tour')) tour.start();
+  else if (P.has('ex')) runEx(+P.get('ex'));
+</script>
+</body>
+</html>

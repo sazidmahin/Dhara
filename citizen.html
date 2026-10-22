@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ধারা | নাগরিক পথনির্দেশ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside class="side"></aside>
+<main class="main">
+  <div class="mockbar">মক প্রদর্শনী: সব নাম, মামলা, ধারার লেখা ও সংখ্যা কাল্পনিক উদাহরণ।
+    <button class="tourbtn" id="tourbtn" type="button">এই পাতার ডেমো চালান</button></div>
+  <div class="app">
+    <div class="pagehead">
+      <div><h1>আপনার বিরোধ, আপনার পথ</h1><p class="sub">কোথায় যাবেন জানুন, অনলাইনে আবেদন করুন, আর আবেদনের অবস্থা দেখুন</p></div>
+    </div>
+    <div class="tabs">
+      <button class="tab on" data-t="route" type="button"><i class="pd pd1"></i>১. কোথায় যাবেন</button>
+      <button class="tab" data-t="apply" type="button"><i class="pd pd2"></i>২. অনলাইনে আবেদন</button>
+      <button class="tab" data-t="status" type="button"><i class="pd pd2"></i>৩. আবেদনের অবস্থা</button>
+    </div>
+
+    <!-- ROUTE -->
+    <section class="tabpanel on" id="tp-route">
+      <div class="split">
+        <div class="panel" id="finder">
+          <div class="panel-h"><h3>তিনটি প্রশ্নের উত্তর দিন</h3><div class="r"><span class="ph ph1">এই অনুদানে</span></div></div>
+          <div class="form">
+            <div class="field full"><label>বিরোধটা কী নিয়ে?</label>
+              <select id="rt">
+                <option value="fam">পারিবারিক বিরোধ (দেনমোহর, ভরণপোষণ)</option>
+                <option value="part">জমি বাটোয়ারা</option>
+                <option value="pre">অগ্রক্রয়</option>
+                <option value="par">পিতা-মাতার ভরণপোষণ</option>
+                <option value="dow">যৌতুক সংক্রান্ত</option>
+                <option value="rent">বাড়িভাড়া</option>
+                <option value="chq">চেক ডিসঅনার</option>
+                <option value="crim">চুরি, মারামারি বা অন্য ফৌজদারি অভিযোগ</option>
+              </select></div>
+            <div class="field"><label>আপনার জেলা</label>
+              <select id="rd">
+                <option>টাঙ্গাইল</option><option>বগুড়া</option><option>ঠাকুরগাঁও</option><option>পটুয়াখালী</option><option>ভোলা</option>
+                <option>নাটোর</option><option>যশোর</option><option>শরীয়তপুর</option><option>কক্সবাজার</option><option>পঞ্চগড়</option>
+              </select></div>
+            <div class="field"><label>কবে মামলা বা আবেদন করতে চান?</label><input type="date" id="rdate" value="2026-09-25"></div>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:10px"><button class="btn pri" id="rgo" type="button">পথ দেখান</button>
+            <span class="muted" style="font-size:13.5px;align-self:center">বাংলায় লিখেও বলা যাবে, আইনি ইঞ্জিন বিরোধের ধরন বুঝে নেবে</span></div>
+          <div id="rres" style="margin-top:18px"></div>
+        </div>
+        <div>
+          <div class="panel">
+            <div class="panel-h"><h3>এই যাচাই কীভাবে কাজ করে</h3></div>
+            <p style="margin:0 0 10px;font-size:14.5px">কিছু বিরোধে মামলার আগে লিগ্যাল এইড অফিসে মধ্যস্থতা বাধ্যতামূলক। নিয়মটা সব জেলায় একসাথে চালু হয়নি, আর চালুর তারিখও আলাদা।</p>
+            <p style="margin:0;font-size:14.5px">তাই ধারা তিনটা জিনিস মিলিয়ে দেখে: <b>বিরোধের ধরন</b>, <b>আপনার জেলা</b> আর <b>তারিখ</b>।</p>
+          </div>
+          <div class="panel" style="margin-top:16px">
+            <div class="panel-h"><h3>সাহায্য দরকার?</h3></div>
+            <ul class="list"><li>☎<div>সরকারি আইনি সহায়তা হেল্পলাইন<br><b>১৬৬৯৯</b> (টোল-ফ্রি)</div></li>
+              <li>🏢<div>ইউনিয়ন ডিজিটাল সেন্টারে গিয়ে সহায়তায় আবেদন করা যাবে</div><span class="r ph ph2">পর্যায় ২</span></li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPLY -->
+    <section class="tabpanel" id="tp-apply" data-phase="2">
+      <div class="split">
+        <div class="panel" id="formp">
+          <div class="panel-h"><h3>আবেদন ফরম</h3><div class="r"><span class="ph ph2">পর্যায় ২</span></div></div>
+          <div class="alert g"><span class="ico">✦</span><div><b>আপনার বর্ণনা থেকে ফরম পূরণ করা হয়েছে</b>সবুজ ঘরগুলো যাচাই করুন, ভুল থাকলে বদলান। জমা দেওয়ার আগে কিছুই পাঠানো হবে না।</div></div>
+          <div class="form">
+            <div class="field ai"><label>আবেদনকারীর নাম</label><input value="রোকসানা বেগম"></div>
+            <div class="field ai"><label>মোবাইল</label><input value="০১৭XX-XXX৪১২"></div>
+            <div class="field ai"><label>জাতীয় পরিচয়পত্র নম্বর</label><input value="XXXX XXX ৫৫১"><div class="hint">✓ NID যাচাই সম্পন্ন</div></div>
+            <div class="field ai"><label>জেলা ও উপজেলা</label><input value="টাঙ্গাইল, সদর"></div>
+            <div class="field ai"><label>বিরোধের ধরন</label><select><option>পারিবারিক: দেনমোহর ও ভরণপোষণ</option></select></div>
+            <div class="field ai"><label>বিরোধ শুরুর তারিখ</label><input value="২ মার্চ ২০২৬"></div>
+            <div class="field ai"><label>অপর পক্ষ</label><input value="মো. কামরুল হাসান (স্বামী)"></div>
+            <div class="field ai"><label>দাবি</label><input value="বকেয়া দেনমোহর ও ভরণপোষণ"></div>
+            <div class="field ai full"><label>সংক্ষিপ্ত বিবরণ</label><textarea rows="3">বিয়ের কাবিননামায় দেনমোহর ২,০০,০০০ টাকা, তার মধ্যে ৫০,০০০ টাকা পরিশোধিত। মার্চ ২০২৬ থেকে স্বামী আলাদা থাকছেন এবং ভরণপোষণ দিচ্ছেন না।</textarea></div>
+          </div>
+          <div class="panel-h" style="margin-top:18px"><h3>কাগজপত্র</h3></div>
+          <div class="docrow"><div class="fi">JPG</div><div style="flex:1"><b>জাতীয় পরিচয়পত্র</b><div class="muted" style="font-size:13.5px">আপলোড হয়েছে · তথ্য মিলেছে</div></div><span class="pri ok">✓ যাচাইকৃত</span></div>
+          <div class="docrow"><div class="fi">PDF</div><div style="flex:1"><b>কাবিননামা</b><div class="muted" style="font-size:13.5px">OCR থেকে পড়া হয়েছে: দেনমোহর ৳২,০০,০০০ · উসুল ৳৫০,০০০</div></div><span class="pri ok">✓ পড়া হয়েছে</span></div>
+          <div class="panel-h" style="margin-top:18px"><h3>নিরাপত্তা</h3></div>
+          <div class="check"><input type="checkbox" id="safe"><label for="safe">অপর পক্ষকে সরাসরি নোটিশ গেলে আমি ঝুঁকিতে পড়তে পারি। অফিসার আগে আমার সাথে কথা বলুন।</label></div>
+          <div class="check"><input type="checkbox" id="consent" checked><label for="consent">আমার তথ্য শুধু এই আবেদনের কাজে ব্যবহারের সম্মতি দিচ্ছি।</label></div>
+          <div style="margin-top:14px"><button class="btn pri" id="submit" type="button">আবেদন জমা দিন</button></div>
+        </div>
+        <div class="panel" id="chatp">
+          <div class="panel-h"><h3>আপনার বর্ণনা</h3></div>
+          <div style="background:#F1F5F9;border-radius:12px 12px 12px 4px;padding:12px 14px;font-size:14.5px;margin-bottom:10px">আমার স্বামী মার্চ মাস থেকে আলাদা থাকে, খরচ দেয় না। কাবিনের টাকাও পুরো দেয়নি। আমি টাঙ্গাইলে থাকি।</div>
+          <div style="background:var(--green-soft);border-radius:12px 12px 4px 12px;padding:12px 14px;font-size:14.5px">বুঝেছি। এটা পারিবারিক বিরোধ, আর টাঙ্গাইলে এখন মামলার আগে মধ্যস্থতা বাধ্যতামূলক। আপনার কাবিননামার ছবি দিলে ফরম পূরণ করে দিচ্ছি।</div>
+          <p class="muted" style="font-size:13px;margin:12px 0 0">কথোপকথন থেকে পাওয়া তথ্যই বাঁদিকের ফরমে বসানো হয়েছে।</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATUS -->
+    <section class="tabpanel" id="tp-status" data-phase="2">
+      <div class="split">
+        <div class="panel" id="statusp">
+          <div class="panel-h"><h3>আবেদন নম্বর <span class="mono">DLA-TNG-2026-00412</span></h3><div class="r"><span class="ph ph2">পর্যায় ২</span></div></div>
+          <div class="pipe"><div class="done">জমা</div><div class="done">যাচাই</div><div class="done">অনুমোদিত</div><div class="cur">মধ্যস্থতা</div><div>নিষ্পত্তি</div></div>
+          <ul class="vtl">
+            <li class="done"><span class="dot"></span><div class="t">আবেদন জমা হয়েছে</div><div class="d">২৫ সেপ্টেম্বর ২০২৬ · জেলা লিগ্যাল এইড অফিস, টাঙ্গাইল</div></li>
+            <li class="done"><span class="dot"></span><div class="t">অফিসার যাচাই করেছেন</div><div class="d">২৬ সেপ্টেম্বর · কাগজপত্র সম্পূর্ণ</div></li>
+            <li class="done"><span class="dot"></span><div class="t">মধ্যস্থতার আবেদন গৃহীত</div><div class="d">২৭ সেপ্টেম্বর · আপনার অনুরোধে অফিসার আগে ফোনে কথা বলেছেন</div></li>
+            <li class="cur"><span class="dot"></span><div class="t">প্রথম মধ্যস্থতা সভা</div><div class="d">৫ অক্টোবর, সকাল ১১টা · ভার্চুয়াল অথবা অফিসে</div></li>
+            <li><span class="dot"></span><div class="t">সমঝোতা চুক্তি বা প্রতিবেদন</div><div class="d">সভার ফলাফল অনুযায়ী</div></li>
+          </ul>
+        </div>
+        <div>
+          <div class="panel">
+            <div class="panel-h"><h3>পরের সভা</h3></div>
+            <div style="font-size:26px;font-weight:700">৫ অক্টোবর</div><div class="muted">রবিবার, সকাল ১১টা</div>
+            <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn pri" type="button">ভার্চুয়াল সভায় যোগ দিন</button><button class="btn" type="button">তারিখ বদলের অনুরোধ</button></div>
+          </div>
+          <div class="panel" style="margin-top:16px">
+            <div class="panel-h"><h3>SMS বার্তা</h3></div>
+            <ul class="list"><li><div>আপনার আবেদন DLA-TNG-2026-00412 জমা হয়েছে।</div><span class="r sm muted">২৫ সেপ্টে.</span></li>
+              <li><div>আপনার মধ্যস্থতা সভা ৫ অক্টোবর সকাল ১১টায়।</div><span class="r sm muted">২৭ সেপ্টে.</span></li></ul>
+          </div>
+          <div class="panel" style="margin-top:16px"><div class="panel-h"><h3>সেবা নিয়ে অভিযোগ</h3></div>
+            <p class="muted" style="margin:0 0 10px;font-size:14px">অফিসার বা প্যানেল আইনজীবীর বিরুদ্ধে অভিযোগ সরাসরি অধিদপ্তরে যাবে।</p><button class="btn" type="button">অভিযোগ জানান</button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="data.js"></script>
+<script>
+  sidebar('citizen'); tabs();
+  const SCHED = { fam: 'পারিবারিক বিরোধ', part: 'জমি বাটোয়ারা', pre: 'অগ্রক্রয়', par: 'পিতা-মাতার ভরণপোষণ', dow: 'যৌতুক সংক্রান্ত বিরোধ', rent: 'বাড়িভাড়া', chq: 'চেক ডিসঅনার' };
+  const DOCS = { fam: 'জাতীয় পরিচয়পত্র, কাবিননামা, সন্তানের জন্মনিবন্ধন (যদি থাকে)', part: 'জাতীয় পরিচয়পত্র, দলিল, খতিয়ান, নামজারির কাগজ', pre: 'জাতীয় পরিচয়পত্র, বিক্রয় দলিলের কপি, খতিয়ান',
+    par: 'জাতীয় পরিচয়পত্র, সন্তানের পরিচয়ের প্রমাণ', dow: 'জাতীয় পরিচয়পত্র, কাবিননামা, চিকিৎসা বা অন্য প্রমাণ', rent: 'জাতীয় পরিচয়পত্র, ভাড়ার চুক্তি বা রসিদ', chq: 'জাতীয় পরিচয়পত্র, চেক, ব্যাংকের ফেরত স্লিপ, লিগ্যাল নোটিশ' };
+  const START = '2026-07-31';
+  function route() {
+    const t = rt.value, d = rd.value, date = rdate.value, box = document.getElementById('rres');
+    if (t === 'crim') {
+      box.innerHTML = `<div class="alert i"><span class="ico">ⓘ</span><div><b>এটা মধ্যস্থতার আওতায় পড়ে না</b>ফৌজদারি অভিযোগ থানায় বা আদালতে করতে হয়। আইনজীবীর খরচ দিতে না পারলে ${d} জেলা লিগ্যাল এইড অফিসে সরকারি খরচে আইনজীবীর জন্য আবেদন করতে পারেন, যোগ্যতা সাপেক্ষে।</div></div>`;
+      return;
+    }
+    const on = date >= START;
+    box.innerHTML = (on
+      ? `<div class="alert g"><span class="ico">✓</span><div><b>মামলার আগে মধ্যস্থতা বাধ্যতামূলক</b>${SCHED[t]} নিয়ে ${d} জেলায় আদালতে যাওয়ার আগে জেলা লিগ্যাল এইড অফিসে মধ্যস্থতার আবেদন করতে হবে। সমঝোতা হলে চুক্তিটা আদালতের ডিক্রির মতো কার্যকর হয়। না হলে অফিসের প্রতিবেদন নিয়ে মামলা করা যাবে।</div></div>`
+      : `<div class="alert w"><span class="ico">!</span><div><b>এই তারিখে ${d} জেলায় নিয়মটি চালু ছিল না</b>বাধ্যতামূলক মধ্যস্থতা এই জেলায় ৩১ জুলাই ২০২৬ থেকে চালু। তার আগের তারিখে সরাসরি মামলা করা যেত, তবে স্বেচ্ছায় মধ্যস্থতার আবেদন তখনো করা যেত।</div></div>`)
+      + `<div class="lawcard"><div class="h"><b>আইনগত সহায়তা প্রদান আইন, ২০০০, ধারা ২১খ</b><span class="b valid">প্রকৃত আইন</span><span class="b hi">এলাকাভিত্তিক কার্যকারিতা</span></div>
+         <p>তফসিলভুক্ত বিরোধে আদালতে মামলা করার আগে সংক্ষুব্ধ পক্ষকে লিগ্যাল এইড অফিসে মধ্যস্থতার আবেদন করতে হবে।</p>
+         <div class="muted" style="font-size:13px;margin-top:6px">কার্যকর: এস,আর,ও নং ২৮৮-আইন/২০২৬ অনুযায়ী ৩১ জুলাই ২০২৬ থেকে ৩০টি নির্দিষ্ট জেলায়, যার মধ্যে ${d} আছে। সূত্র: bdlaws, সংশোধনী পাদটীকা।</div></div>`
+      + `<div class="panel" style="box-shadow:none;margin-top:4px"><div class="panel-h"><h3>সাথে যা লাগবে</h3></div><div style="font-size:14.5px">${DOCS[t]}</div>
+         <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn pri" type="button" onclick="showTab('apply')">অনলাইনে আবেদন করুন</button><span class="ph ph2" style="align-self:center">পর্যায় ২</span></div></div>`;
+  }
+  rgo.addEventListener('click', route);
+  submit.addEventListener('click', () => showTab('status'));
+  route();
+  if (location.hash === '#apply') showTab('apply');
+
+  demo([
+    { t: 'নাগরিকের প্রথম প্রশ্ন: কোথায় যাব?', el: '#finder', do: async () => { showTab('route'); rt.value = 'fam'; rd.value = 'টাঙ্গাইল'; rdate.value = '2026-09-25'; route(); },
+      p: 'বিরোধের ধরন, জেলা আর তারিখ দিলে ধারা জানায় মধ্যস্থতা বাধ্যতামূলক কিনা। এই অংশ এই অনুদানেই তৈরি হবে, কারণ এটা সরাসরি আইনি ইঞ্জিনের কাজ।' },
+    { t: 'একই প্রশ্ন, আগের তারিখে', el: '#rres', do: async () => { rdate.value = '2026-06-15'; route(); },
+      p: 'জুন ২০২৬-এর তারিখে টাঙ্গাইলে নিয়মটা চালু ছিল না, তাই উত্তরও বদলে গেছে। এখানে উৎস হিসেবে প্রকৃত আইন আর SRO দেখানো হয়েছে।' },
+    { t: 'ফৌজদারি হলে ভিন্ন পথ', el: '#rres', do: async () => { rt.value = 'crim'; rdate.value = '2026-09-25'; route(); },
+      p: 'চুরি বা মারামারির অভিযোগ মধ্যস্থতার আওতায় নয়। ধারা তখন থানা বা আদালতের পথ দেখায়, আর সরকারি খরচে আইনজীবী পাওয়ার সুযোগের কথা জানায়।' },
+    { t: 'কথোপকথন থেকে ফরম', el: '#formp', do: async () => { rt.value = 'fam'; route(); showTab('apply'); },
+      p: 'নাগরিক নিজের ভাষায় সমস্যা বলেছেন, আর কাবিননামার ছবি দিয়েছেন। ধারা সেখান থেকে ফরমের ঘরগুলো পূরণ করেছে। নাগরিক যাচাই না করা পর্যন্ত কিছুই জমা হয় না।' },
+    { t: 'নিরাপত্তার প্রশ্ন', el: '#safe', do: async () => { safe.checked = true; },
+      p: 'পারিবারিক সহিংসতার ঝুঁকি থাকলে অপর পক্ষকে স্বয়ংক্রিয় নোটিশ যাবে না। অফিসার আগে নাগরিকের সাথে কথা বলবেন।' },
+    { t: 'আবেদনের অবস্থা', el: '#statusp', do: async () => showTab('status'),
+      p: 'জমা দেওয়ার পর আবেদন নম্বর আর SMS আসে। কোন ধাপে আছে, পরের সভা কবে, সব এক পাতায়। অভিযোগ জানানোর পথও এখানেই।' },
+    { t: 'এবার অফিসারের দিক', el: '.nav a[href="lao.html"]',
+      p: 'এই আবেদনটা এখন জেলা লিগ্যাল এইড অফিসারের তালিকায় পৌঁছেছে। দেখা যাক অফিসার কী দেখেন।' }
+  ], 'lao.html', 'অফিসারের ড্যাশবোর্ডে যান');
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ধারা | ধারা ব্রাউজার</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside class="side"></aside>
+
+<main class="main">
+  <div class="mockbar">মক প্রদর্শনী: এখানে দেখানো আইন, ধারা, তারিখ ও লেখা কাল্পনিক উদাহরণ, প্রকৃত আইন নয়।
+    <button class="tourbtn" id="tourbtn" type="button">ধাপে ধাপে ডেমো দেখুন</button></div>
+  <div class="page">
+    <div class="crumb" id="crumb"></div>
+    <div class="head" id="head">
+      <div>
+        <h1 id="title"></h1>
+        <p class="act" id="act"></p>
+      </div>
+      <div class="tools">
+        <div class="seg" role="group" aria-label="ভাষা">
+          <button class="on" data-lang="bn" type="button">বাংলা</button><button data-lang="en" type="button">English</button>
+        </div>
+        <div class="seg" role="group" aria-label="দেখার ধরন">
+          <button class="on" data-mode="text" type="button">লেখা</button><button data-mode="diff" type="button">পরিবর্তন</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pgrid">
+      <div>
+        <div id="vers"><h2>সংস্করণের ইতিহাস</h2><div id="verlist"></div></div>
+        <div class="pasof" id="pasof">
+          একটি তারিখ বেছে নিন, সেই দিনে কার্যকর সংস্করণ দেখাবে
+          <input type="date" id="asof" min="2006-10-11" max="2026-12-31" aria-label="যে তারিখের সংস্করণ">
+        </div>
+      </div>
+
+      <div>
+        <h2 id="ctitle">ধারার লেখা</h2>
+        <div class="card" id="card">
+          <div id="warn"></div>
+          <div class="status" id="status"></div>
+          <p class="law" id="law"></p>
+          <div class="legend" id="legend" hidden><span class="d">বাদ দেওয়া হয়েছে</span><span class="i">যোগ করা হয়েছে</span></div>
+          <p class="fnote" id="fn"></p>
+        </div>
+        <table class="meta" id="meta">
+          <tr><th>ধারার শনাক্তকারী</th><td><code id="pid"></code></td></tr>
+          <tr><th>কার্যকর হওয়ার তারিখ</th><td id="from"></td></tr>
+          <tr><th>কার্যকারিতা শেষ</th><td id="to"></td></tr>
+          <tr><th>সংশোধক আইন</th><td id="by"></td></tr>
+          <tr><th>পূর্ববর্তী সংস্করণ</th><td id="prev"></td></tr>
+          <tr><th>সংশোধন-ইতিহাসের নির্ভরযোগ্যতা</th><td id="lin"></td></tr>
+          <tr><th>তারিখ নির্ণয়ের ভিত্তি (সংশোধনী পাদটীকা)</th><td id="foot"></td></tr>
+          <tr><th>মূল উৎস</th><td>বাংলাদেশ কোড পোর্টাল<br><span id="url" style="color:var(--green);word-break:break-all"></span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="data.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const P = new URLSearchParams(location.search);
+  const state = { s: SECTIONS[P.get('s')] ? P.get('s') : '123', date: P.get('d') || TODAY, lang: 'bn', mode: 'text' };
+
+  function toc() {
+    const groups = {};
+    Object.entries(SECTIONS).forEach(([id, s]) => (groups[s.chapter] = groups[s.chapter] || []).push([id, s]));
+    sidebar('prov', `<div class="sidelist"><p>${ACT.bn}</p>${Object.entries(groups).map(([ch, list]) =>
+      `<div class="ch">${ch}</div>${list.map(([id, s]) => `<a href="#" data-sec="${id}" class="${id === state.s ? 'on' : ''}">ধারা ${s.num}: ${s.title.bn}</a>`).join('')}`).join('')}</div>`);
+    document.querySelectorAll('[data-sec]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openSec(a.dataset.sec); }));
+  }
+  function openSec(id) { state.s = id; state.mode = 'text'; state.date = TODAY; toc(); draw(); }
+
+  function draw() {
+    const s = SECTIONS[state.s], v = versionAt(state.s, state.date), en = state.lang === 'en';
+    const canDiff = !!s.diff, diff = canDiff && state.mode === 'diff';
+    $('asof').value = state.date;
+    $('crumb').textContent = `বাংলাদেশ কোড / ${ACT.bn} / ${s.chapter.split(':')[0]} / ধারা ${s.num}`;
+    $('title').textContent = en ? `Section ${state.s}: ${s.title.en}` : `ধারা ${s.num}: ${s.title.bn}`;
+    $('act').textContent = en ? ACT.en : ACT.bn;
+
+    $('verlist').innerHTML = [...s.versions].reverse().map(x => `
+      <div class="ver ${x.to ? '' : 'cur'} ${x === v ? 'on' : ''}" data-v="${x.from}">
+        <span class="mark"></span>
+        <div class="t">${x.key === 'old' ? 'মূল সংস্করণ' : (s.versions.length > 1 ? 'সংশোধিত সংস্করণ' : 'বর্তমান সংস্করণ')}</div>
+        <div class="r">${fmt(x.from)} থেকে ${x.to ? fmt(x.to) : 'বর্তমান'}</div>
+        <div class="by">${x.key === 'old' ? 'মূল আইন' : (s.lineage === 'none' ? 'পূর্ববর্তী সংস্করণ অজানা' : 'সংশোধক: ' + x.by.bn)}</div>
+      </div>`).join('');
+    document.querySelectorAll('.ver').forEach(el => el.addEventListener('click', () => { state.date = el.dataset.v; state.mode = 'text'; draw(); }));
+
+    document.querySelector('[data-mode="diff"]').disabled = !canDiff;
+    document.querySelector('[data-mode="diff"]').style.opacity = canDiff ? 1 : .4;
+    document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('on', b.dataset.mode === (diff ? 'diff' : 'text')));
+    document.querySelectorAll('[data-lang]').forEach(b => b.classList.toggle('on', b.dataset.lang === state.lang));
+
+    $('ctitle').textContent = diff ? 'মূল সংস্করণ থেকে সংশোধিত সংস্করণে পরিবর্তন' : (en ? 'Text of the provision' : 'ধারার লেখা');
+    $('law').className = 'law' + (en ? ' en' : '');
+    $('law').innerHTML = `<span class="num">${en ? state.s + '.' : s.num + '।'}</span>` + (diff ? s.diff[state.lang] : mk(v[state.lang]));
+    $('legend').hidden = !diff;
+    $('warn').innerHTML = s.lineage === 'none'
+      ? '<div class="warnbox">এই ধারার সংশোধন-ইতিহাস স্বয়ংক্রিয়ভাবে নির্ণয় করা যায়নি। পূর্ববর্তী কোনো তারিখের লেখা নিশ্চিত নয়, তাই শুধু বর্তমান লেখা দেখানো হচ্ছে।</div>' : '';
+    const L = LINEAGE[s.lineage];
+    $('status').innerHTML = diff
+      ? `<span class="b old">মূল: ${fmt(s.versions[0].from)}</span><span class="b valid">সংশোধিত: ${fmt(s.versions[1].from)}</span>`
+      : (v.to ? `<span class="b old">রহিত সংস্করণ: ${fmt(v.to)} পর্যন্ত কার্যকর ছিল</span>` : '<span class="b valid">বর্তমানে কার্যকর</span>') + `<span class="b ${L.cls}">${L.bn}</span>`;
+    $('fn').textContent = diff ? 'সংশোধনী পাদটীকা থেকে প্রতিস্থাপন ও সংযোজন স্বয়ংক্রিয়ভাবে শনাক্ত করা হয়েছে।' : '';
+
+    const idx = s.versions.indexOf(v);
+    $('pid').textContent = `${ACT.id}/s${state.s}@${v.from}`;
+    $('from').textContent = fmt(v.from);
+    $('to').textContent = v.to ? fmt(v.to) : 'বর্তমানে কার্যকর';
+    $('by').textContent = v.by.bn;
+    $('prev').textContent = idx > 0 ? `${ACT.id}/s${state.s}@${s.versions[idx - 1].from}` : (s.lineage === 'none' ? 'অজানা' : 'নেই');
+    $('foot').textContent = v.foot; $('url').textContent = srcUrl(state.s);
+    $('lin').innerHTML = `<span class="b ${L.cls}">${{ high: 'উচ্চ', medium: 'মাঝারি', none: 'নেই' }[s.lineage]}</span>`;
+  }
+
+  $('asof').addEventListener('change', e => { state.date = e.target.value; state.mode = 'text'; draw(); });
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => { state.lang = b.dataset.lang; draw(); }));
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { if (!b.disabled) { state.mode = b.dataset.mode; draw(); } }));
+
+  toc(); draw();
+
+  const tour = Tour([
+    { t: 'একটি ধারার পূর্ণ চিত্র', el: '#head', do: async () => { state.s = '123'; state.date = TODAY; state.lang = 'bn'; state.mode = 'text'; toc(); draw(); },
+      p: 'উত্তরের উৎসে চাপ দিলে এই পাতা খোলে। বাংলাদেশ কোডের প্রতিটি ধারা আলাদা রেকর্ড হিসেবে রাখা, আইন থেকে অধ্যায় থেকে ধারা পর্যন্ত কাঠামো সহ।' },
+    { t: 'সংস্করণের ইতিহাস', el: '#vers',
+      p: 'প্রতিটি সংস্করণ কবে থেকে কবে পর্যন্ত কার্যকর ছিল এবং কোন আইন দিয়ে সংশোধিত হয়েছে, সব এক জায়গায়। যেকোনো সংস্করণে চাপ দিলে তার লেখা দেখা যায়।' },
+    { t: 'তারিখ দিয়ে সংস্করণ খোঁজা', el: '#pasof', do: async () => { state.date = '2010-03-15'; state.mode = 'text'; draw(); },
+      p: '১৫ মার্চ ২০১০ তারিখ বেছে নেওয়ায় তখনকার মূল সংস্করণ দেখাচ্ছে, সাথে "রহিত সংস্করণ" চিহ্ন। বিরোধের তারিখের আইন সরাসরি পাওয়া যায়।' },
+    { t: 'ঠিক কী বদলেছে', el: '#card', do: async () => { state.mode = 'diff'; draw(); },
+      p: '"পরিবর্তন" দেখায় মূল থেকে সংশোধিত সংস্করণে কোন শব্দ বাদ গেছে (লাল) আর কী যোগ হয়েছে (সবুজ)। এগুলো পোর্টালের সংশোধনী পাদটীকা থেকে স্বয়ংক্রিয়ভাবে নির্ণীত।' },
+    { t: 'বাংলা ও ইংরেজি পাশাপাশি', el: '#card', do: async () => { state.lang = 'en'; draw(); },
+      p: 'প্রতিটি ধারার বাংলা ও ইংরেজি লেখা জোড়া হিসেবে রাখা। এক বাটনে ভাষা বদলানো যায়, পরিবর্তনের চিহ্নও বজায় থাকে।' },
+    { t: 'প্রতিটি ধারার মেটাডেটা', el: '#meta', do: async () => { state.lang = 'bn'; state.mode = 'text'; state.date = TODAY; draw(); },
+      p: 'শনাক্তকারী, কার্যকারিতার সময়, সংশোধক আইন, পূর্ববর্তী সংস্করণের লিংক, নির্ভরযোগ্যতা, আর সবচেয়ে গুরুত্বপূর্ণ: কোন সংশোধনী পাদটীকা থেকে তারিখ নির্ণীত এবং মূল উৎসের পাতা। প্রতিটি উত্তর এই প্রমাণ পর্যন্ত ফিরে দেখা যায়।' },
+    { t: 'ইতিহাস না পাওয়া গেলে', el: '#card', do: async () => { openSec('124'); },
+      p: 'ধারা ১২৪ এর সংশোধন-ইতিহাস নির্ণয় করা যায়নি। তাই শুধু বর্তমান লেখা দেখানো হয়, "পরিবর্তন" বন্ধ থাকে, আর স্পষ্ট সতর্কবার্তা থাকে।' },
+    { t: 'অনুসন্ধানের ইতিহাস', el: '.nav a[href="history.html"]',
+      p: 'সব প্রশ্ন তারিখ ও ফলাফল সহ ইতিহাসে জমা থাকে, যেকোনোটি আবার খোলা যায়।' }
+  ], { lastLabel: 'ইতিহাস দেখুন', onLast: () => { location.href = 'history.html'; } });
+  $('tourbtn').addEventListener('click', tour.start);
+  if (P.has('tour')) setTimeout(tour.start, 300);
+</script>
+</body>
+</html>
