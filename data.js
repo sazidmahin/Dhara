@@ -91,9 +91,9 @@ const EXAMPLES = [
 
 /* sidebar: full application navigation */
 const NAV = [
-  { k: 'home', href: 'home.html', t: 'প্ল্যাটফর্ম পরিচিতি', ic: 'home' },
+  { k: 'home', href: 'index.html', t: 'প্ল্যাটফর্ম পরিচিতি', ic: 'home' },
   { g: 'আইনি ইঞ্জিন' },
-  { k: 'search', href: 'index.html', t: 'আইন অনুসন্ধান', ic: 'search', p: 1 },
+  { k: 'search', href: 'search.html', t: 'আইন অনুসন্ধান', ic: 'search', p: 1 },
   { k: 'prov', href: 'provision.html', t: 'ধারা ব্রাউজার', ic: 'book', p: 1 },
   { k: 'hist', href: 'history.html', t: 'অনুসন্ধানের ইতিহাস', ic: 'hist', p: 1 },
   { g: 'নাগরিক' },
@@ -121,7 +121,7 @@ function sidebar(active, extra) {
   const nav = NAV.map(n => n.g ? `<div class="grp">${n.g}</div>` :
     `<a href="${n.href}" class="${active === n.k ? 'on' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICONS[n.ic]}</svg>${n.t}${n.p ? `<i class="pd pd${n.p}" title="পর্যায় ${bn(n.p)}"></i>` : ''}</a>`).join('');
   document.querySelector('.side').innerHTML = `
-    <a class="brand" href="home.html"><span class="logo">ধ</span><span>ধারা<small>আইন, সঠিক তারিখে</small></span></a>
+    <a class="brand" href="index.html"><span class="logo">ধ</span><span>ধারা<small>আইন, সঠিক তারিখে</small></span></a>
     <nav class="nav">${nav}</nav>
     ${extra || ''}
     <div class="scopebox">
@@ -145,7 +145,7 @@ function showTab(name) {
 }
 const wait = ms => new Promise(r => setTimeout(r, ms));
 function demo(steps, next, nextLabel) {
-  const t = Tour(steps, { lastLabel: nextLabel || 'পরের অংশে যান', onLast: () => { location.href = next === 'home.html' ? next : next + (next.includes('?') ? '&' : '?') + 'demo=1'; } });
+  const t = Tour(steps, { lastLabel: nextLabel || 'পরের অংশে যান', onLast: () => { location.href = next === 'index.html' ? next : next + (next.includes('?') ? '&' : '?') + 'demo=1'; } });
   const b = document.getElementById('tourbtn'); if (b) b.addEventListener('click', t.start);
   if (new URLSearchParams(location.search).has('demo')) setTimeout(t.start, 350);
   return t;

@@ -13,7 +13,7 @@
 <aside class="side"></aside>
 <main class="main">
   <div class="mockbar">মক প্রদর্শনী: এখানে দেখানো আইন, ধারা, তারিখ ও লেখা কাল্পনিক উদাহরণ, প্রকৃত আইন নয়।
-    <a class="tourbtn" href="index.html?tour=1" style="text-decoration:none">ডেমো আবার শুরু করুন</a></div>
+    <a class="tourbtn" href="search.html?tour=1" style="text-decoration:none">ডেমো আবার শুরু করুন</a></div>
   <section class="hist">
     <h1>অনুসন্ধানের ইতিহাস</h1>
     <p class="lede">আগের প্রশ্নগুলো, যে তারিখের আইনে খোঁজা হয়েছিল এবং কী ফল এসেছিল। যেকোনো প্রশ্ন আবার চালাতে চাপ দিন।</p>
@@ -26,7 +26,7 @@
   sidebar('hist');
   const RES = { ok: ['valid', 'উদ্ধৃতি সহ উত্তর'], time: ['mid', 'পুরোনো সংস্করণে উত্তর'], warn: ['warn', 'সতর্কতা সহ উত্তর'], no: ['no', 'উত্তর দেওয়া হয়নি'] };
   document.getElementById('list').innerHTML = EXAMPLES.map((e, i) => `
-    <a class="hrow" href="index.html?ex=${i}">
+    <a class="hrow" href="search.html?ex=${i}">
       <span><span class="hq">${e.q}</span><br><span class="hd">${e.label}</span></span>
       <span class="hd">${fmt(e.d)}</span>
       <span><span class="b ${RES[e.kind][0]}">${RES[e.kind][1]}</span></span>
